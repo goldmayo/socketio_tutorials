@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style type="text/css">
+      body {
+        background-color: black;
+        color: whitesmoke;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script
+      src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+      integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var socket = io.connect("http://127.0.0.1:7000/");
+        socket.on("connect", function () {
+          socket.send("user has connected!");
+        });
+        socket.on("message", function (msg) {
+          $("#messages").append(`<li>${msg}</li>`);
+          console.log("received messages");
+        });
+        $("#sendbutton").on("click", function () {
+          socket.send($("#mymessage").val());
+          $("#mymessage").val("");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Received</h1>
+    <ul id="messages"></ul>
+    <input id="mymessage" type="text" />
+    <button id="sendbutton">Send</button>
+  </body>
+</html>
